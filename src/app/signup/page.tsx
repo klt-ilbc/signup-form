@@ -13,16 +13,26 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Slide,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ChevronRight } from "@mui/icons-material";
+import CustomTextField from "../../components/CustomTextField";
 
 import React, { useState } from "react";
 
 const page = () => {
   const [openSignUpForm, setOpenSignUpForm] = useState(false);
   const [value, setValue] = useState();
+  const [userRole, setUserRole] = useState(1);
+
+  const toggleRole = (role) => {
+    setUserRole(role);
+  };
+
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -31,6 +41,10 @@ const page = () => {
     setOpenSignUpForm(false);
   };
 
+  /* const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="down" ref={ref} {...props} />;
+  });
+*/
   const regions = [
     "Yangon",
     "Mandalay",
@@ -47,73 +61,96 @@ const page = () => {
 
   return (
     <>
-      <Container
+      <Button onClick={() => setOpenSignUpForm(true)} variant="text">
+        Sign up
+      </Button>
+      <Dialog
+        open={openSignUpForm}
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          "& .MuiPaper-root": {
+            borderRadius: "30px",
+            background: "#217FCE",
+          },
         }}
+        keepMounted
+        onClose={handleCloseSignUpForm}
+        aria-describedby="alert-dialog-slide-description"
       >
-        <Button onClick={() => setOpenSignUpForm(true)} variant="text">
-          Sign up
-        </Button>
-      </Container>
-      // signup dialog
-      <Dialog open={openSignUpForm} fullWidth onClose={handleCloseSignUpForm}>
+        <DialogTitle
+          id="alert-dialog-slide-description"
+          fontSize="40px"
+          fontWeight={600}
+          color="#FFF"
+          textAlign="center"
+        >
+          Sign Up
+        </DialogTitle>
         <DialogContent
           sx={{
             overflow: "hidden",
             display: "flex",
-
             position: "relative",
             flexDirection: "column",
-            bgcolor: "#217FCE",
             gap: 1,
-            padding: { xs: "1rem", md: "1rem 2rem" },
           }}
         >
-          <Typography
-            fontSize="40px"
-            fontWeight={600}
-            color="#FFF"
-            textAlign="center"
-            my="1rem"
+          <Stack
+            direction="row"
+            mb={2}
+            justifyContent="center"
+            alignItems="center"
           >
-            Sign Up
-          </Typography>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap={4}
+              bgcolor="#62A8E2"
+              border="1px solid #FFF"
+              borderRadius="30px"
+              position="relative"
+              justifyContent={userRole === 1 ? "flex-start" : "flex-end"}
+            >
+              <Box
+                bgcolor="transparent"
+                onClick={() => toggleRole(1)}
+                px={4}
+                py={1}
+                component="div"
+                sx={{
+                  bgcolor: userRole === 1 && "#FFF",
+                  borderRadius: "30px",
+                  color: userRole === 1 ? "#217FCE" : "#FFF",
+                  margin: 0.5,
+                }}
+              >
+                Learner
+              </Box>
+              <Box
+                bgcolor="transparent"
+                onClick={() => toggleRole(2)}
+                px={4}
+                py={1}
+                component="div"
+                sx={{
+                  bgcolor: userRole === 2 && "#FFF",
+                  borderRadius: "30px",
+                  color: userRole === 2 ? "#217FCE" : "#FFF",
+                  margin: 0.5,
+                }}
+              >
+                Instructor
+              </Box>
+            </Box>
+          </Stack>
           <Stack direction="row" mb={2} spacing={2}>
             <Box width="49%">
-              <TextField
-                fullWidth
-                placeholder="Username"
-                inputProps={{
-                  style: {
-                    fontSize: "14px",
-                    padding: "11px 15px",
-                    color: "#FFF",
-                  },
-                }}
-                sx={{
-                  "& fieldset": {
-                    border: "none",
-                  },
-
-                  height: 44,
-                  bgcolor: "#62A8E3",
-                  border: "1px solid #FFF",
-                  borderRadius: "30px",
-                }}
-              />
+              <CustomTextField label="Username" />
             </Box>
-            <Box width="49%" overflow="hidden">
+            <Box width="49%">
               <Autocomplete
                 sx={{
                   "& fieldset": {
                     border: "none",
-                  },
-                  "&& .MuiAutocomplete-root": {
-                    bgcolor: "#FFF",
                   },
                   "&& .MuiOutlinedInput-root": {
                     fontSize: "14px",
@@ -147,53 +184,14 @@ const page = () => {
           </Stack>
           <Stack direction="row" mb={2} spacing={2}>
             <Box width="49%">
-              <TextField
-                fullWidth
-                placeholder="Password"
-                inputProps={{
-                  style: {
-                    padding: "11px 15px",
-                    color: "#FFF",
-                    fontSize: "14px",
-                  },
-                }}
-                sx={{
-                  "& fieldset": {
-                    border: "none",
-                  },
-
-                  height: 44,
-                  bgcolor: "#62A8E3",
-                  border: "1px solid #FFF",
-                  borderRadius: "30px",
-                }}
-              />
+              <CustomTextField label="Password" />
             </Box>
             <Box width="49%">
-              <TextField
-                fullWidth
-                placeholder="Confirm Password"
-                inputProps={{
-                  style: {
-                    padding: "11px 15px",
-                    color: "#FFF",
-                  },
-                }}
-                sx={{
-                  "& fieldset": {
-                    border: "none",
-                  },
-
-                  height: 44,
-                  bgcolor: "#62A8E3",
-                  border: "1px solid #FFF",
-                  borderRadius: "30px",
-                }}
-              />
+              <CustomTextField label="Confirm Password" />
             </Box>
           </Stack>
-          <Stack direction="row" mb={2} spacing={2}>
-            <Box width="49%">
+          <Stack direction="row" spacing={2}>
+            <Box width="50%">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   sx={{
@@ -222,7 +220,7 @@ const page = () => {
               height="44px"
               border="1px solid #FFF"
               borderRadius="30px"
-              width="49%"
+              width="50"
               overflow="hidden"
             >
               <Stack
@@ -243,11 +241,11 @@ const page = () => {
                   name="controlled-radio-buttons-group"
                   value={value}
                   onChange={handleChange}
+                  sx={{ marginLeft: "9px" }}
                 >
                   <FormControlLabel
                     sx={{
                       color: "white",
-
                       "&& span > .MuiSvgIcon-root": {
                         width: "18px",
                         height: "18px",
@@ -264,7 +262,6 @@ const page = () => {
                   <FormControlLabel
                     sx={{
                       color: "white",
-
                       "&& span > .MuiSvgIcon-root": {
                         width: "18px",
                         height: "18px",
@@ -283,6 +280,43 @@ const page = () => {
             </Box>
           </Stack>
         </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", marginBottom: "14px" }}>
+          <Button
+            sx={{
+              "& fieldset": {
+                border: "none",
+              },
+              textTransform: "initial",
+              fontSize: "15px",
+              color: "#FFF",
+              paddingX: 6,
+              background: "#62A8E2",
+              border: "1px solid #FFF",
+              borderRadius: "30px",
+            }}
+          >
+            Sign up
+          </Button>
+        </DialogActions>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height={55}
+          bgcolor="white"
+        >
+          <Button
+            variant="text"
+            sx={{
+              textDecoration: "underline",
+              textTransform: "initial",
+              fontSize: "13px",
+              color: "#217FCE",
+            }}
+          >
+            Already have an account?
+          </Button>
+        </Box>
       </Dialog>
     </>
   );
