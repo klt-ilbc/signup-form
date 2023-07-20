@@ -18,21 +18,17 @@ const page = () => {
           >
             <Box bgcolor="#FCC" height="40%" width="100%"></Box>
             <Box
-              position="absolute"
               borderRadius="50%"
+              width={140}
+              height={140}
               overflow="hidden"
               border="4px solid #FFF"
-              sx={{
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%,-70%)",
-              }}
             >
               <Image
                 src="/avatar.jpg"
                 alt="avatar"
-                width="140"
-                height="140"
+                width="100%"
+                height="100%"
                 objectFit="cover"
               />
             </Box>

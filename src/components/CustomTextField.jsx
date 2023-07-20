@@ -1,15 +1,18 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const CustomTextField = ({ label }) => {
+const CustomTextField = ({ label, value, onChange, name }) => {
   return (
     <TextField
+      name={name}
+      value={value}
+      onChange={onChange}
       fullWidth
       placeholder={label}
       inputProps={{
         style: {
           fontSize: "14px",
-          padding: "11px 15px",
+          padding: "13px 15px",
           color: "#FFF",
         },
       }}
